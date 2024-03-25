@@ -39,13 +39,17 @@ year20 <- read_csv("data/map_year20.csv") |>
       filter(site %in% c("RB-8", "RB-9", "RB-10", "RB-11", "RB-12", "RB-13"))
 
 all <- rbind(old, year19, year20)
-# writexl::write_xlsx(all, "data/all_diets_thruMarch2024.xlxs")
+writexl::write_xlsx(all, "data/all_diets_thruMarch2024.xlsx")
 
 all_bass <- all |> 
       filter(speciescode == 20)
 
 all_snook <- all |> 
       filter(speciescode == 50)
+
+all_snook_size_summary <- all_snook |> 
+      group_by(hydroyear) |> 
+      summarize(avg_size = mean(as.numeric(weight), na.rm = TRUE))
 
 annual_sample_size <- all |> 
       group_by(hydroyear, speciescode) |> 
