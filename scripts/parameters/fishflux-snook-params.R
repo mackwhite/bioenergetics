@@ -14,7 +14,7 @@
 # library(fishflux)
 librarian::shelf(tidyverse, readxl, readr, fishflux)
 
-
+data(param_zebsco)
 # aspect ratio ------------------------------------------------------------
 ### source = FishBase.org
 asp_rat <- aspect_ratio("Centropomus undecimalis")
@@ -72,6 +72,13 @@ b0_m = 0.00048083
 b0_sd = 1e-10
 
 # metabolic rate ----------------------------------------------------------
+### these values need re-evaluated
+metabolic_rate(temp = 26, troph = 4.125, asp = 1.90693, B0 = 0.00048083,
+               m_max = 7500, m = 4500, a = 0.77, growth_g_day = 0.018, 
+               f = 2)
 
-metabolic_rate(temp, troph, asp, B0, m_max, m, a, growth_g_day, f)
 
+mod <- cnp_model_mcmc(TL = 25:75, param = list(
+      Qc_m = 40, Qn_m = 10, Qp_m = 4, Dn_sd = 0.05))
+plot_cnp(mod = mod, y = c("Fp", "Gp", "Wp", "Ip"),
+         x = "tl", probs = c(0.5, 0.8))
