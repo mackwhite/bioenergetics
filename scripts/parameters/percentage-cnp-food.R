@@ -12,7 +12,11 @@ librarian::shelf(tidyverse, readxl, readr, fishflux)
 
 ### read in data
 dat <- read_csv("data/parameters/diet-nutrients/shark-river-prey-nutrients.csv") |> 
-      filter(!is.na(CommonName))
+      filter(!is.na(CommonName)) |> 
+      ### filtering weird outliers
+      filter(C_percent >= 35) |> 
+      filter(N_percent >= 8) |> 
+      filter(P_percent >= 0.5)
 
 glimpse(dat)
 
