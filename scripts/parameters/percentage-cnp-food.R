@@ -40,3 +40,12 @@ summary_dat <- dat |>
                 Dn_sd = sd(N_percent),
                 Dp_m = mean(P_percent),
                 Dp_sd = sd(P_percent))
+
+bg_test <- dat |> 
+      filter(CommonName == "Bluegill") |> 
+      mutate(cn = C_mol/N_mol,
+             np = N_mol/P_mol,
+             cp = C_mol/P_mol) |> 
+      summarize(meancn = mean(cn),
+                meannp = mean(np),
+                meancp = mean(cp))
