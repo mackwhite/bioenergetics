@@ -38,6 +38,7 @@ dat |>
       geom_boxplot()
 
 summary_dat <- dat |> 
+      group_by(CommonName) |> 
       summarize(Dc_m = mean(C_percent),
                 Dc_sd = sd(C_percent),
                 Dn_m = mean(N_percent),
@@ -45,11 +46,4 @@ summary_dat <- dat |>
                 Dp_m = mean(P_percent),
                 Dp_sd = sd(P_percent))
 
-bg_test <- dat |> 
-      filter(CommonName == "Bluegill") |> 
-      mutate(cn = C_mol/N_mol,
-             np = N_mol/P_mol,
-             cp = C_mol/P_mol) |> 
-      summarize(meancn = mean(cn),
-                meannp = mean(np),
-                meancp = mean(cp))
+writexl::write_xlsx(summary_dat, "data/parameters/diet-nutrients/shark-river-summary.xlsx")
