@@ -60,6 +60,16 @@ perciformes_metabolic <- metabolic_parameters |>
                 b0_m_avg = mean(b0_m),
                 b0_sd_avg = mean(b0_sd))
 
+model_parameters(sp = "Centropomus undecimalis", family = "Centropomidae", temp = 24.1825)
+model_parameters(sp = "Micropterus salmoides", family = "Centrarchidae", temp = 24.1825)
+model_parameters(sp = "Lepisosteus platyrhincus", family = "Lepisosteidae", temp = 24.1825, otolith = FALSE)
+model_parameters(sp = "Amia calva", family = "Amiidae", temp = 24.1825, otolith = FALSE)
+model_parameters(sp = "Oreochromis aureus", family = "Cichlidae", temp = 24.1825, otolith = FALSE)
+model_parameters(sp = "Anguilla rostrata", family = "Anguillidae", temp = 24.1825, otolith = FALSE)
+model_parameters(sp = "Macrognathus siamensis", family = "Mastacembelidae", temp = 24.1825, otolith = FALSE)
+model_parameters(sp = "Mugil cephalus", family = "Mugilidae", temp = 24.1825, otolith = FALSE)
+model_parameters(sp = "Pterygoplichthys multiradiatus", family = "Loricariidae", temp = 24.1825, otolith = FALSE)
+
 
 # metabolism --------------------------------------------------------------
 ### source = Barneche & Allen 2018 Ecology Letters doi: 10.1111/ele.12947. These parameters are for the best model (Model 2 in the paper online supplementary material) of fish resting metabolic rates reported in the paper, which also includes trophic level as a covariate.
@@ -71,33 +81,36 @@ alpha_sd = 0.05286288
 b0_m = 0.00048083
 b0_sd = 1e-10
 
+metabolism("Sciaenidae", temp = 24.1825, troph_m = 4.125)
+metabolism("Centrarchidae", temp = 24.1825, troph_m = 4.125)
+
 # metabolic rate ----------------------------------------------------------
 ### these values need re-evaluated
-metabolic_rate(temp = 24.1825, troph = 4.125, asp = 1.90693, B0 = 0.00048083,
-               m_max = 8151, m = 4500, a = 0.77, growth_g_day = 0.098, 
+metabolic_rate(temp = 24.1825, troph = 4.125, asp = 1.90693, B0 = 0.0007550052,
+               m_max = 8151, m = 4500, a = 0.6993033, growth_g_day = 0.098, 
                f = 2.5)
 
 mod <- cnp_model_mcmc(TL = 25:75, param = list(
-      Qc_m = 36.41 , Qc_sd = 2.71, Qn_m = 11.04, Qn_sd = 0.75, Qp_m = 4.27, Qp_sd = 0.13,
-      Dc_m = 45.491330,	Dc_sd = 3.974171, Dn_m = 10.592380, Dn_sd	= 0.855285, Dp_m = 1.912000, Dp_sd = 0.634503,
+      Qc_m = 43.54966, Qc_sd = 2.540621, Qn_m = 10.75658, Qn_sd = 0.747464, Qp_m = 2.680854, Qp_sd = 0.4940187,
+      Dc_m = 43.50965,	Dc_sd = 2.817301, Dn_m = 10.50397, Dn_sd	= 0.8348159, Dp_m = 2.477653, Dp_sd = 0.4584972,
       ac_m = 0.8, an_m = 0.8, ap_m = 0.7,
       linf_m = 101.1079, linf_sd = 4.998803, k_m = 0.175, k_sd = 0.015500, t0_m = -1.352, t0_sd = 0.1714,
       lwa_m = 0.009504, lwb_m = 3.078241,
       mdw_m = 0.258806,
       f0_m = 0.002531, f0_sd = 0.000000000515726,
-      alpha_m = 0.77, alpha_sd = 0.052863, theta_m = 2.5, theta_sd = 0.5,
+      alpha_m = 0.6993033, alpha_sd = 0.1095661, theta_m = 2.5, theta_sd = 0.5,
       r_m = 1.906930, h_m = 4.125, h_sd = 0.5, v_m = 24.1825, v_sd = 3.449313 
       ))
 
 plot_cnp(mod = mod, y = c("Fp"),
-         x = "tl", probs = c(0.5, 0.8, 0.95))
+         x = "tl", probs = c(0.5, 0.8))
+
+plot_cnp(mod = mod, y = c("Fp", "Ip"),
+         x = "tl", probs = c(0.5))
 
 sensitivity(TL = 10, param = list(Qc_sd = 2.71, Qn_sd = 0.75, Qp_sd = 0.13,
                                   Dc_sd = 3.974171, Dn_sd = 0.855285, Dp_sd = 0.634503),
             par = c("Qp_sd","Qn_sd","Qc_sd",
                     "Dp_sd","Dn_sd","Dc_sd"), out = c("Fp", "Ip"))
-
-test <- read_rds("../shark-river-movement-syndromes/data/snook_cnd_movement_clean.rds")
-
 
       
