@@ -27,6 +27,7 @@ dt <- dat |>
       mutate(class = if_else(class == "Actinopterygii", 
                              "Teleostei", 
                              class))
+
 Dx_mixed_summary <- dt |> 
       summarize(Dc_m = mean(Dc_m, na.rm = TRUE),
                 Dc_sd = mean(Dc_sd, na.rm = TRUE),
@@ -82,7 +83,6 @@ Dx_diet_treatments <- rbind(Dx_mixed_summary, Dx_lepomis_summary,
                             Dx_invert_summary, Dx_fish_summary) |> 
       select(Diet, everything())
 write_csv(Dx_diet_treatments, "data/parameters/diet-nutrients/diet-treament-quality.csv")
-
 
 Qx_summary <- dt |> 
       filter(order == "Perciformes") |> 
