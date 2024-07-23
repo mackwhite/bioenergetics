@@ -38,6 +38,30 @@ Dx_summary <- dt |>
                 Jg_se = mean(Jg_se, na.rm = TRUE)) |> 
       ungroup()
 
+Dx_invert_summary <- dt |> 
+      filter(class!= "Teleostei") |> 
+      summarize(Dc_m = mean(Dc_m, na.rm = TRUE),
+                Dc_sd = mean(Dc_sd, na.rm = TRUE),
+                Dn_m = mean(Dn_m, na.rm = TRUE),
+                Dn_sd = mean(Dn_sd, na.rm = TRUE),
+                Dp_m = mean(Dp_m, na.rm = TRUE),
+                Dp_sd = mean(Dp_sd, na.rm = TRUE),
+                Jg_m = mean(Jg_m, na.rm = TRUE),
+                Jg_se = mean(Jg_se, na.rm = TRUE)) |> 
+      ungroup()
+
+Dx_vert_summary <- dt |> 
+      filter(class == "Teleostei") |> 
+      summarize(Dc_m = mean(Dc_m, na.rm = TRUE),
+                Dc_sd = mean(Dc_sd, na.rm = TRUE),
+                Dn_m = mean(Dn_m, na.rm = TRUE),
+                Dn_sd = mean(Dn_sd, na.rm = TRUE),
+                Dp_m = mean(Dp_m, na.rm = TRUE),
+                Dp_sd = mean(Dp_sd, na.rm = TRUE),
+                Jg_m = mean(Jg_m, na.rm = TRUE),
+                Jg_se = mean(Jg_se, na.rm = TRUE)) |> 
+      ungroup()
+
 Qx_summary <- dt |> 
       filter(order == "Perciformes") |> 
       summarize(Qc_m = mean(Dc_m, na.rm = TRUE),
