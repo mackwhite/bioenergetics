@@ -27,7 +27,7 @@ dt <- dat |>
       mutate(class = if_else(class == "Actinopterygii", 
                              "Teleostei", 
                              class))
-Dx_summary <- dt |> 
+Dx_mixed_summary <- dt |> 
       summarize(Dc_m = mean(Dc_m, na.rm = TRUE),
                 Dc_sd = mean(Dc_sd, na.rm = TRUE),
                 Dn_m = mean(Dn_m, na.rm = TRUE),
@@ -36,7 +36,8 @@ Dx_summary <- dt |>
                 Dp_sd = mean(Dp_sd, na.rm = TRUE),
                 Jg_m = mean(Jg_m, na.rm = TRUE),
                 Jg_se = mean(Jg_se, na.rm = TRUE)) |> 
-      ungroup()
+      ungroup() |> 
+      mutate(Diet = "Mixed")
 
 Dx_invert_summary <- dt |> 
       filter(class!= "Teleostei") |> 
@@ -48,7 +49,8 @@ Dx_invert_summary <- dt |>
                 Dp_sd = mean(Dp_sd, na.rm = TRUE),
                 Jg_m = mean(Jg_m, na.rm = TRUE),
                 Jg_se = mean(Jg_se, na.rm = TRUE)) |> 
-      ungroup()
+      ungroup() |> 
+      mutate(Diet = "Crustaceans")
 
 Dx_lepomis_summary <- dt |> 
       filter(genus == "Lepomis") |> 
@@ -60,9 +62,10 @@ Dx_lepomis_summary <- dt |>
                 Dp_sd = mean(Dp_sd, na.rm = TRUE),
                 Jg_m = mean(Jg_m, na.rm = TRUE),
                 Jg_se = mean(Jg_se, na.rm = TRUE)) |> 
-      ungroup()
+      ungroup() |> 
+      mutate(Diet = "Lepomis spp.")
 
-Dx_vert_summary <- dt |> 
+Dx_fish_summary <- dt |> 
       filter(class == "Teleostei") |> 
       summarize(Dc_m = mean(Dc_m, na.rm = TRUE),
                 Dc_sd = mean(Dc_sd, na.rm = TRUE),
@@ -72,7 +75,14 @@ Dx_vert_summary <- dt |>
                 Dp_sd = mean(Dp_sd, na.rm = TRUE),
                 Jg_m = mean(Jg_m, na.rm = TRUE),
                 Jg_se = mean(Jg_se, na.rm = TRUE)) |> 
-      ungroup()
+      ungroup() |> 
+      mutate(Diet = "Fish")
+
+Dx_diet_treatments <- rbind(Dx_mixed_summary, Dx_lepomis_summary, 
+                            Dx_invert_summary, Dx_fish_summary) |> 
+      select(Diet, everything())
+write_csv(Dx_diet_treatments, "data/parameters/diet-nutrients/diet-treament-quality.csv")
+
 
 Qx_summary <- dt |> 
       filter(order == "Perciformes") |> 
@@ -85,6 +95,8 @@ Qx_summary <- dt |>
                 Jg_m = mean(Jg_m, na.rm = TRUE),
                 Jg_se = mean(Jg_se, na.rm = TRUE)) |> 
       ungroup()
+
+write_csv(Qx_summary, "data/population/snook-quality-taxon-fill.csv")
 
 # NA-fill data to closest taxonomic unit ----------------------------------
 
@@ -143,4 +155,6 @@ df1 <- df |>
              Dp_sd = Dp_sd_filled,
              Jg_m = Jg_m_filled,
              Jg_se = Jg_se_filled)
+
+write_csv(df1, "data/parameters/diet-nutrients/prey-quality-taxon-fill-final.csv")
 
