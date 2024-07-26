@@ -13,7 +13,7 @@
 # devtools::install_github("nschiett/fishflux", dependencies=TRUE)
 # library(fishflux)
 librarian::shelf(tidyverse, readxl, readr, fishflux)
-
+data("param_zebsco")
 
 # identify metabolic parameters for perciformes ---------------------------
 
@@ -277,12 +277,21 @@ diet_effects_cs |>
 mixed_limitation <- limitation(mod = mod_all, plot = FALSE) |> 
       mutate(Diet = "Mixed")
 
+limitation(mod = mod_all, plot = TRUE) |> 
+      mutate(Diet = "Mixed")
+
 ### sunfish diet
 lepomis_limitation <- limitation(mod = mod_lepomis, plot = FALSE) |> 
       mutate(Diet = "Lepomis spp.")
 
+limitation(mod = mod_lepomis, plot = TRUE) |> 
+      mutate(Diet = "Lepomis spp.")
+
 ### crustaceans
 crustacean_limitation <- limitation(mod = mod_invert, plot = FALSE) |> 
+      mutate(Diet = "Crustaceans")
+
+limitation(mod = mod_invert, plot = TRUE) |> 
       mutate(Diet = "Crustaceans")
 
 diet_effects_lim <- rbind(mixed_limitation, lepomis_limitation, crustacean_limitation)
